@@ -55,7 +55,7 @@ function App() {
   return (
     <div className={classes.mainWrapper}>
 <h1 className={classes.headerTitle}>Todo app</h1>
-<div>
+<div className={classes.todoListWrapper}>
 
 {
   todoList && todoList.length > 0 ?
