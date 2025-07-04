@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 
 
-function TodoLitem({todo}) {
+function TodoLitem({todo, fetchDetailsOfCurrentTodo}) {
 
     console.log(todo);
 
@@ -19,7 +19,10 @@ function TodoLitem({todo}) {
             </Typography>
            </CardContent>
            <CardActions>
-            <Button sx={{
+            <Button
+            onClick={() => fetchDetailsOfCurrentTodo(todo?.id)}
+            
+            sx={{
                 color: "#fff",
                 backgroundColor: "#000000",
                 opacity: "0.75",

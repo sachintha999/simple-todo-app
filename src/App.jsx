@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import classes from './styles.module.css';
 import TodoItem from './components/todo-item';
+import TodoDetails from './components/todo-detail';
 
 
 function App() {
@@ -9,6 +10,8 @@ function App() {
   const [todoList, setTodoList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [todoDetails, setTodoDetails] = useState(null);
+  const [openDialog,setOpenDialog] = useState(false);
 
 
   async function fetchListofTodos(){
@@ -44,11 +47,43 @@ function App() {
     }
   }
 
+  async function fetchDetailsOfCurrentTodo(getCurrentTodoId){
+    console.log(getCurrentTodoId);
+
+
+    try {
+
+      const apiResponse = await fetch(`https://dummyjson.com/todos/${getCurrentTodoId}`)
+
+      const details = await apiResponse.json();
+     
+      if(details) {
+
+        setTodoDetails(details);
+        setOpenDialog(true);
+
+      } else {
+        setTodoDetails(null);
+         setOpenDialog(false);
+      }
+
+    }catch(error) {
+      console.log(error);
+    }
+    
+  }
+
+
   useEffect(() => {
     fetchListofTodos();
     
 
-  },[])
+  },[]);
+
+
+  if(loading){
+    return <h1>Loading...</h1>
+  }
 
   
 
@@ -59,11 +94,20 @@ function App() {
 
 {
   todoList && todoList.length > 0 ?
-  todoList.map(todoItem=> <TodoItem todo={todoItem}/>) : null
+  todoList.map(todoItem=> <TodoItem fetchDetailsOfCurrentTodo={fetchDetailsOfCurrentTodo}
+   todo={todoItem}/>) : null
 }
 
 
 </div>
+
+<TodoDetails
+setOpenDialog={setOpenDialog}
+openDialog={openDialog}
+todoDetails={todoDetails}
+setTodoDetails={setTodoDetails}
+
+/>
 
     </div>
   )
